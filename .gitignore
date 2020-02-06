@@ -4,3 +4,4 @@ cron/log
 test.php
 uploads/
 core/lib/mysql_data
+cron/log.php

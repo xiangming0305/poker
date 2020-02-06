@@ -1,0 +1,6 @@
+admin/modules/log
+cron/log
+.idea/
+test.php
+uploads/
+core/lib/mysql_data

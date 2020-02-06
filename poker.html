@@ -1,0 +1,679 @@
+
+<!doctype html>
+<html>
+<head>
+            <meta charset='utf-8'/>
+        <meta property="og:title" content="Online Poker" />
+<!--        <meta name="viewport" content="width=device-width, initial-scale=1">-->
+        <meta property="description" content="just make an account and share this site to start earning from each client you bring" />
+        <meta property="og:description" content="just make an account and share this site to start earning from each client you bring" />
+<!--        <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300,300i,400,400i,700,700i" rel="stylesheet">-->
+        <link rel="stylesheet" href="/libs/datetimepicker/build/jquery.datetimepicker.min.css">
+        <link rel='stylesheet' href='/css/main.css'/>
+        <link rel='stylesheet' href='/css/admin.css'/>
+        <script src='/js/retarcore.js'></script>
+        <script src='/js/retarcore-ui.js'></script>
+        <script src='/js/common.js'></script>
+        <link rel='shortcut icon'  href='/favicon.ico'/>
+
+
+
+    <title>Online Poker</title>
+    <link rel='stylesheet' href='/css/index.css'/>
+    <script src='/js/index.js'></script>
+
+
+</head>
+
+<body>
+<header>
+    <a href='/' class="logo">
+        <img src='/img/logo.png'/>
+    </a>
+    <div class="dd-menu">
+        <nav class='menu'>
+            <ul>
+                <li><a class='game' href='/game'>Game</a></li>
+                                <li>
+                    <a class='contacts' href='/profile/contact.php'>
+                        Contacts <span class='message-count'></span>
+                    </a>
+                </li>
+
+
+            </ul>
+        </nav>
+        <nav class='login'>
+            <ul>
+                <li><a class='freeroll game' href='#freeroll'>Freeroll</a></li>
+
+                                    <li><a href='#' id='login'>Login</a></li>
+                    <li><a href='#' id='register'>Register</a></li>
+                            </ul>
+
+            <div id='requestDeposit' class='popup'>
+                <div class='wrap'>
+                    <hgroup>
+                        <h3>Your balance: <span class='number' id='balanceAmountDep'></span> chips
+                        </h3>
+                        <p>You can request a chips deposit from administrator.
+                            1 USD                            = 100 chips</p>
+                    </hgroup>
+                    <div>
+                        <label>
+                            <input type="hidden" id="depositRate"
+                                   value="100">
+                            <span>Amount of money</span>
+                            <input type='number' min='1' max='1000000' id='depositAmount' value=''/>
+                        </label>
+                        <label>
+                            <span>Amount of chips will be received</span>
+                            <input type='number' min='1' max='1000000' id='depositChip' value='' readonly/>
+                        </label>
+
+                        <label>
+                            <span>Payment method</span>
+                            <select name="" id="depositPaymentMethod">
+                                <option value=""></option>
+                                                                    <option value="13"
+                                            data-desc="Payment method: Bitcoin<br>Description: download bitcoin ewallet from https://Bitcoin.com<br>Receiver name: None<br>Receiver country: None<br>Payment address: 1HsRGoaEqK4i8MFtHavnjrbij4TLSoS4Ny">Bitcoin</option>
+                                                            </select>
+                            <span class="payment-desc"></span>
+                        </label>
+
+                        <label>
+                            <span>Payment made from name</span>
+                            <input type='text' id='depositPaidFrom' value=''/>
+                        </label>
+
+                        <label>
+                            <span>Payment made from account</span>
+                            <input type='text' id='depositPaidFromAccount' value=''/>
+                        </label>
+
+                        <label>
+                            <span>Payment made from country</span>
+                            <input type='text' id='depositPaidFromCountry' value=''/>
+                        </label>
+
+                        <label>
+                            <span>Payment transaction ID</span>
+                            <input type='text' id='depositTransactionId' value=''/>
+                        </label>
+
+                        <input type='button' class='button' value='Request deposit' id='deposit'/>
+                        <p id='depositStatus' class='status'></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id='balance' class='popup'>
+                <div class='wrap'>
+                    <hgroup>
+                        <h3>Your balance: <span class='number' id='balanceAmount'></span> chips
+                        </h3>
+                        <p>At any time you can request cash out your chips balance to real money.</p>
+                    </hgroup>
+                    <div>
+                        <label>
+                            <span>Chips to transfer</span>
+                            <input type='number' min='1' max='' id='chips'
+                                   value=''/>
+                        </label>
+						<label>
+                            <span>Payment method</span>
+                            <select name="" id="cashOutPaymentMethod">
+                                <option value=""></option>
+                                                            </select>
+                            <span class="payment-desc-cash"></span>
+                        </label>
+						<label>
+                            <span>Receiver name</span>
+                            <input type='text' id='cashOutBy' value=''/>
+                        </label>
+
+                        <label>
+                            <span>Receiver account</span>
+                            <input type='text' id='cashOutByAccount' value=''/>
+                        </label>
+
+                        <label>
+                            <span>Receiver country</span>
+                            <input type='text' id='cashOutByCountry' value=''/>
+                        </label>
+                        <input type='button' class='button' value='Request cash out' id='cashin'/>
+                        <p id='balanceStatus' class='status'></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class='popup' id='transfersHistory'>
+                <div class='wrap'>
+                    <hgroup>
+                        <h2>Transfers history</h2>
+
+                    </hgroup>
+                    <nav>
+                        <ul>
+                            <li><a href='#' id='incomesTab' class='active'>Incomes</a></li>
+                            <li><a href='#' id='outcomesTab'>Outcomes</a></li>
+                        </ul>
+                    </nav>
+                    <div class='spinner_big'></div>
+                    <table id='historyIncome'>
+                        <thead>
+                        <td>Date</td>
+                        <td>Amount</td>
+                        <td>From</td>
+                        </thead>
+
+                        <tbody>
+                        <template id='transferTemplate'>
+                            <tr>
+                                <td>{{date}}</td>
+                                <td><span class='number'>{{amount}}</span></td>
+                                <td>{{subject}}</td>
+                            </tr>
+                        </template>
+                        </tbody>
+                    </table>
+
+                    <table id='historyOutcome'>
+                        <thead>
+                        <td>Date</td>
+                        <td>Amount</td>
+                        <td>To</td>
+                        </thead>
+
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+
+            <div id='freeroll' class='popup'>
+                <div id='wrap'>
+                    <hgroup>
+                        <h2>Available tournaments</h2>
+                        <p>Here are displayed available tournaments for you to take part in.</p>
+                    </hgroup>
+
+                    <pre></pre>
+
+
+                    <table>
+                        <thead>
+                        <td>Tournament</td>
+                        <td>Free seats</td>
+                        <td>Total seats</td>
+                                                    <td>Entry fee</td>
+                                                <td>Actions</td>
+                        </thead>
+
+                        <tbody id='tournamentsPart'>
+                        <template id='tournamentsTemplate'>
+                            <tr data-name='{{name}}'>
+                                <td>{{name}}</td>
+                                <td>{{freeseats}}</td>
+                                <td>{{seats}}</td>
+                                                                    <td><span class='number'>{{point_fee}}</span></td>
+                                                                <td data-accepted='{{accepted}}'>
+                                    <p class='register'>
+                                        <input type='button' class='button register' value='Register'/>
+                                    </p>
+                                    <p class='unregister'>
+                                        <input type='button' class='button unregister' value='Unregister'/>
+                                    </p>
+                                    <p class='unauthorized'>
+                                        <span class='err'>Log in to take part!</span>
+                                    </p>
+                                    <p class='nenough'>
+                                        <span class='err'>Not enough points to take part!</span>
+                                    </p>
+                                </td>
+                            </tr>
+                        </template>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+    
+<main>
+    <section class='slider'>
+
+    </section>
+
+    <section class='game_list' style="overflow-x: scroll">
+        <h2>Game List</h2>
+        <table class="list-tournaments">
+            <thead>
+            <tr>
+                <td></td>
+                <td>Game</td>
+                <td>Buy in</td>
+                <td>Prize bonus</td>
+                <td>Start time</td>
+                <td>Start full</td>
+                <td>Min players</td>
+                <td>Max rebuys</td>
+                <td>AddOn Chips</td>
+                <td>Multiply prize bonus</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+
+                            <tr>
+                    <td class="text-center">1</td>
+                    <td>
+                        <a href="">Freeroll Ticket</a><br>
+                        <p>No Limit Hold'em</p>
+                    </td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td></td>
+                    <td>Yes</td>
+                    <td>6</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>No</td>
+                    <td>
+                        <a href="/game"><button class="btn-play">Play now!</button></a>
+                    </td>
+                </tr>
+                            <tr>
+                    <td class="text-center">2</td>
+                    <td>
+                        <a href="">Go</a><br>
+                        <p>No Limit Hold'em</p>
+                    </td>
+                    <td>90</td>
+                    <td>0</td>
+                    <td></td>
+                    <td>Yes</td>
+                    <td>6</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>No</td>
+                    <td>
+                        <a href="/game"><button class="btn-play">Play now!</button></a>
+                    </td>
+                </tr>
+                            <tr>
+                    <td class="text-center">3</td>
+                    <td>
+                        <a href="">headsup</a><br>
+                        <p>No Limit Hold'em</p>
+                    </td>
+                    <td>90</td>
+                    <td>0</td>
+                    <td></td>
+                    <td>Yes</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>No</td>
+                    <td>
+                        <a href="/game"><button class="btn-play">Play now!</button></a>
+                    </td>
+                </tr>
+                            <tr>
+                    <td class="text-center">4</td>
+                    <td>
+                        <a href="">Headsup1</a><br>
+                        <p>No Limit Hold'em</p>
+                    </td>
+                    <td>90</td>
+                    <td>0</td>
+                    <td></td>
+                    <td>Yes</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>No</td>
+                    <td>
+                        <a href="/game"><button class="btn-play">Play now!</button></a>
+                    </td>
+                </tr>
+                            <tr>
+                    <td class="text-center">5</td>
+                    <td>
+                        <a href="">high</a><br>
+                        <p>No Limit Hold'em</p>
+                    </td>
+                    <td>9000</td>
+                    <td>0</td>
+                    <td></td>
+                    <td>Yes</td>
+                    <td>6</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>No</td>
+                    <td>
+                        <a href="/game"><button class="btn-play">Play now!</button></a>
+                    </td>
+                </tr>
+                            <tr>
+                    <td class="text-center">6</td>
+                    <td>
+                        <a href="">high+</a><br>
+                        <p>No Limit Hold'em</p>
+                    </td>
+                    <td>18000</td>
+                    <td>0</td>
+                    <td></td>
+                    <td>Yes</td>
+                    <td>6</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>No</td>
+                    <td>
+                        <a href="/game"><button class="btn-play">Play now!</button></a>
+                    </td>
+                </tr>
+                        </tbody>
+        </table>
+    </section>
+
+    <section class='ads'>
+        <h2>Advertisment</h2>
+        <ul>
+
+        </ul>
+    </section>
+
+    <section class='payment'>
+        <h2>Payment</h2>
+        <figure>
+            <img src='/img/payment.png'/>
+        </figure>
+    </section>
+</main>
+
+<footer>
+    <div class='top'>
+        <div class="p-relative" style="display: flex;">
+            <div class="footer-about" style="flex: 30%">
+                <h3>About Game</h3>
+                <p>let introduce our game ,this is a sociable games allow clients to invite their friends and play poker together ,
+we have integrate the new video call Feature enable client to
+video chat with each others while playing our card game .
+please Note this is not a Gambling site,
+and you cant request a withdraw .
+all players start with free 100 Chips, 
+and after that you can buy more chips ,
+here you can rent a private  table or tournament 
+up to 1000 players, and 
+you can drop us an email if you Like to manage your own tournament in your region.
+our company develop all Kind of softwares and websites and it is our pleasure to take a new challenging project or allow you to choose from our existing product .
+****please Note our system will detect if ther is multiple account made from same pc and ip and if any transfer is made 
+before making first deposit you will be banned immediately without prior notice  and passport and other verification can be on request
+                    Email: <a href="mailto:prodealer2@gmail.com">contactus@pokercam.net</a> </p>
+            </div>
+
+            <div class="footer-link" style="flex: 50%;position: relative">
+                <div style="position: absolute; bottom: 0; right: 0">
+                    <a href="#" class="footer-page" id="footer-term-and-condition" data-target="#footer-term-and-condition-page">Terms and condition</a> |
+                    <a href="#" class="footer-page" id="footer-privacy-and-policy" data-target="#footer-privacy-and-policy-page">Privacy and policy</a> |
+                    <a href="#" class="footer-page" id="footer-poker-rules" data-target="#footer-poker-rules-page">Poker rules</a> |
+                    <a href="#" class="footer-page" id="footer-contact" data-target="#footer-contact-page">Contact</a> |
+                    <a href="#" class="footer-page" id="footer-about-us" data-target="#footer-poker-about-us">About us</a> |
+                    <a href="#" class="footer-page" id="" data-target="#footer-payment-method">Payment method</a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class='bottom'>
+        <p>2018 &copy; Online Poker. All rights reserved.</p>
+    </div>
+</footer>
+
+<div id='popup'>
+
+    <form id='login_form' method='POST' action='/auth/auth.php'>
+        <h2> Log In</h2>
+        <fieldset>
+            <label>
+                <span>Your player name</span>
+                <input type='text' name='playername' id='playername' required/>
+            </label>
+
+            <label>
+                <span>Password</span>
+                <input type='password' name='password' id='password' required/>
+            </label>
+            <label>
+                <input type='checkbox' name='remember'/>
+                <span>Remember me</span>
+
+                <a href="#" class="forget-password" id="forget_password">Forget password?</a>
+            </label>
+
+
+
+            <input type='submit' id='login_btn' value='Log In'/>
+            <input type='button' id='closeForm' value='Cancel'/>
+            <p class='status'></p>
+        </fieldset>
+    </form>
+
+    <form id='register_form' method='post' action='/auth/register.php'>
+        <h2>Register</h2>
+        <fieldset class='title'>
+            <div>
+                <label>
+                    <span>Player Name</span>
+                    <input type='text' required name='playername'/>
+                </label>
+
+                <label>
+                    <span>E-mail</span>
+                    <input type='email' required name='email'/>
+                </label>
+            </div>
+            <ul class='details'>
+                <li>Player name is login name that will appear with your avatar on the poker table. The name must be
+                    from 3 to 12 characters and can only include letters, numbers, dashes, and underscores.
+                </li>
+                <li>Email address (80 characters max) is used for account validation and password recovery. It is not
+                    displayed to other players.
+                </li>
+            </ul>
+
+        </fieldset>
+
+        <fieldset class='cols'>
+            <div>
+
+                <label>
+                    <span>Password</span>
+                    <input type='password' required name='password'/>
+                </label>
+
+                <label>
+                    <span>Real name</span>
+                    <input type='text' name='realname'/>
+                </label>
+
+                <label>
+                    <span>Affiliate code</span>
+                    <input type='text'
+                           name='affiliatecode'                            value=''/>
+                </label>
+				<input type='hidden' value='54.36.163.215' name='ip'/>
+                <input type='hidden' value='1' name='level'/>
+            </div>
+
+            <div>
+                <label>
+                    <span>Confirm password</span>
+                    <input type='password' required name='confirmpassword'/>
+                </label>
+
+                <label>
+                    <span>Location</span>
+                    <input type='text' name='location'/>
+                </label>
+
+                <p>
+                    <span class='heading'>Gender</span>
+                    <label class='inline'>
+                        <input type='radio' name='sex' value='m' checked>
+                        <span>Male</span>
+                    </label>
+                    <label class='inline'>
+                        <input type='radio' name='sex' value='f'/>
+                        <span>Female</span>
+                    </label>
+                </p>
+            </div>
+
+            <div style="margin-left: 25%">
+                <label>
+                    <span>Enter the code</span>
+                    <img id="captcha" src="/libs/securimage/securimage_show.php" alt="CAPTCHA Image"/> <input
+                            type="text" name="captcha_code" size="10" maxlength="6" required/>
+                    <a href="#"
+                       onclick="document.getElementById('captcha').src = '/libs/securimage/securimage_show.php?' + Math.random(); return false">[
+                        Different Image ]</a>
+                </label>
+            </div>
+
+            <p class='buttons'>
+                <input type='submit' id='register_btn' value='Register'/>
+                <input type='button' id='closeForm' value='Cancel'/>
+            </p>
+            <p class='status'></p>
+        </fieldset>
+    </form>
+
+    <form id='forget_password_form' method='POST' action='/auth/forget_password.php'>
+        <h2> Forget password</h2>
+        <fieldset>
+            <p>You will receive an url used to reset your password.</p>
+            <label>
+                <span>Your email</span>
+                <input type='text' name='email' id='email' required/>
+            </label>
+            <input type='submit' id='forget_password_btn' value='Submit'/>
+            <input type='button' id='closeForm' value='Cancel'/>
+            <p class='status'></p>
+        </fieldset>
+    </form>
+
+
+   <form id="footer-contact-page">
+        <h2><a href="/#contact">Contact</a></h2>
+        <p class="p-10">Contact me via <br/>
+            Email:contactus@pokercam.net <br/>
+            Phone:
+        </p>
+    </form>
+
+    <form id="footer-term-and-condition-page">
+        <h2><a href="/#terms-and-condition">Terms and condition</a></h2>
+        <p class="p-10">please Note this is not a gambling product and you cant expect money in return ,
+and when you submit a payment it is for the service we provide ,
+and for chips you get and it is when you request your own tournament .
+all price are shown when making a request ,
+and no refund is allowed ,
+but we keep for you all right and it is our responsability to 
+provide the service you paid for .
+all players start with free 100 Chips ,
+and every 100 Chips cost 1 USD ,
+and when requesting your own tournament you pay 5 USD for each seat .
+we are following the Texas holdem stabdard rules ,
+and this apply on our games .
+****Note that our system will detect if there is multiple account made from same pc and ip and if any transfer is made 
+before making first deposit you will be banned immediately without prior notice  and passport and other verification can be on request
+when you use our service you agree our terms ad conditions and you accept our cookies which used to authorize your access to our services. </p>
+    </form>
+
+    <form id="footer-privacy-and-policy-page">
+        <h2><a href="/#privacy-and-policy">Privacy and policy</a></h2>
+        <p class="p-10">
+<div>Please Note This is not a Gambling site and no withdraw option is available , </div>
+we understand how much your personal data and information are important for you ,
+and this why your data will not shared for any purpose and it is encrypted in our server .
+when you submit a payment you doing that for the service we provide ,
+and no refund is acceptable ,
+but you have all rights and it is our responsibility to provide  the service you 
+paid for .
+we are usuing the texas holdem standard rules and this which apply
+on our game .
+</p>
+    </form>
+
+    <form id="footer-poker-rules-page">
+        <h2><a href="/#poker-rules">Poker rules</a></h2>
+        <p class="p-10"><div>* Play of the Hand</div>
+<div>Each player is dealt two down (or hole) cards that only they can see. A round of betting occurs. Three community cards (known as the "flop") are dealt face up in the middle of the table. Another round of betting occurs. A fourth community card (known as the "turn") is dealt face up on the table. Another round of betting occurs. A fifth and final community card (known as the "river") is dealt face up on the table. A final round of better occurs. The player's hole cards are revealed and the player with the best five-card poker hand wins the pot. Your five card hand can consist of none, one, or both of your hole cards along with five, four, or three of the community cards. If two or more players share the same best hand, the pot is divided equally among the winners.</div>
+
+ <div>*Rank of Hands</div>
+<div>Poker hands are ranked in the order specified below, lowest to highest. Note that only card rank (deuce through ace) matter in poker when comparing individual cards. The suits of clubs, diamonds, hearts, and spades are all considered equal.</div>
+
+<div>High Card: Cards are ranked deuce (2) as the lowest to ace as the highest. If two or more players have the same high card, then the second highest card (and so on, to the fifth card if necessary) determine the winner.</div>
+
+
+<div>Pair: A pair (two cards of the same rank) beats high card. The highest pair is a pair of aces. If two or more playershave the same pair, then the highest of the three remaining cards (known as kickers) determine the winner.</div>
+
+
+<div>Two Pair: Two pair beats a pair. If two or more players have two pair, then the highest pair determines the winner. For example, a pair of aces and sevens beats a pair of kings and queens. If two or more players have the same two pair then the fifth card kicker determines the winner.</div>
+
+
+<div>Three of a Kind: Three of a kind (three cards of the same rank) beats two pair. Three aces is the best of these. If two or more players share the same three of a kind hand, the two remaining kickers determine the winner.</div>
+
+
+<div>Straight: A straight beats three of a kind. A straight is five consecutive card ranks. Aces can be high or low so the lowest straight is ace through five while the highest is ten through ace. There are no kickers with straights since all five cards are needed to make the hand.</div>
+
+
+<div>Flush: A flush beats a straight. A flush is any five cards all of the same suit (i.e., all diamonds or all spades, etc.). If two of more players share a flush then the player with the highest card (all the way to the fifth card if necessary) in the flush wins.</div>
+
+
+<div>Full House: A full house beats a flush. A full house is the combination of three of a kind and a pair. If two or more players have a full house then the player with the best three of a kind wins. If those are the same then the player with the best pair wins.</div>
+
+
+<div>Four of a Kind: Four of a kind (four cards of the same rank) beats a full house. If two or more players share the same four of a kind, then the fifth card kicker determines the winner.</div>
+
+
+<div>Straight Flush: A straight flush (five consecutive cards all of the same suit) beats four of a kind. Aces can be high or low. An ace-high straight flush is called a royal flush, the best possible hand in poker.</div>
+
+</p>
+    </form>
+
+    <form id="footer-poker-about-us" >
+        <h2><a href="/#about-us">About us</a></h2>
+        <p class="p-10">PokerCam.net is Registered in Costa Rica,
+we are expert regarding website and softwares development ,
+with the best technology available ,
+and this site show one of our product ,
+we hope that you enjoy our games,
+and it is our pleasure to take a new challeging project ,
+drop us an email when needed </p>
+    </form>
+
+    <form id="footer-payment-method">
+        <h2><a href="/#payment-method">Payment method</a></h2>
+        <p class="p-10">payment method 
+currently we accep bitcoin as payment ,
+and we are adding new payment continuously ,
+here you can download bitcoin ewallet ,
+and start using Bitcoin ,
+https://www.bitcoin.com/</p>
+    </form>
+</div>
+
+<script src="/libs/datetimepicker/jquery.js"></script>
+<script src="/libs/datetimepicker/build/jquery.datetimepicker.full.min.js"></script></body>
+</html>
